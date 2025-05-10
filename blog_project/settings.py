@@ -130,6 +130,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'blog/static'),
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 
 LOGIN_REDIRECT_URL = 'blog-home'
@@ -142,14 +144,3 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-"""
-# Create default profile pic path if it doesn't exist
-DEFAULT_PROFILE_PIC = os.path.join(MEDIA_ROOT, 'profile_pics/default.png')
-os.makedirs(os.path.dirname(DEFAULT_PROFILE_PIC), exist_ok=True)
-if not os.path.exists(DEFAULT_PROFILE_PIC):
-    import shutil
-    shutil.copy(
-        os.path.join(BASE_DIR, 'blog/static/blog/profile_pics/default.png'),
-        DEFAULT_PROFILE_PIC
-    )
-"""
