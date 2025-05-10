@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.env
+
+# Pipenv
+Pipfile.lock
+
+# Django
+db.sqlite3
+*.log
+/static/
+/media/
+/*.pyc
+
+# VSCode / JetBrains / general IDEs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

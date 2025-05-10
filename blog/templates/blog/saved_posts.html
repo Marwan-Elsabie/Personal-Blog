@@ -1,0 +1,30 @@
+{% extends "blog/base.html" %}
+{% block title %}Saved Posts{% endblock %}
+
+{% block content %}
+<div class="content-section">
+    <h2>Saved Posts</h2>
+    {% for post in posts %}
+        <article class="media content-section mb-4">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <a class="me-2" href="{% url 'profile' post.author.username %}">{{ post.author }}</a>
+                    <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+                </div>
+                <h4><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h4>
+                <p class="article-content">{{ post.content|truncatechars:200 }}</p>
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" class="img-fluid mb-3" alt="Post image">
+                {% endif %}
+                <button class="btn btn-outline-secondary bookmark-button" 
+                        data-post-id="{{ post.id }}"
+                        data-bookmarked="true">
+                    📌 Saved
+                </button>
+            </div>
+        </article>
+    {% empty %}
+        <p>No saved posts yet. Click the 📌 icon on posts to save them.</p>
+    {% endfor %}
+</div>
+{% endblock %}

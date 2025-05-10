@@ -1,0 +1,25 @@
+{% extends "blog/base.html" %}
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+<div class="content-section">
+    <h2>Notifications</h2>
+    {% for notification in notifications %}
+    <div class="card mb-2 {% if not notification.read %}border-primary{% endif %}">
+        <div class="card-body">
+            {% if notification.notification_type == 'like' %}
+                <a href="{% url 'profile' notification.sender.username %}">{{ notification.sender }}</a> 
+                liked your post 
+                <a href="{% url 'post-detail' notification.post.id %}">{{ notification.post.title }}</a>
+            {% elif notification.notification_type == 'follow' %}
+                <a href="{% url 'profile' notification.sender.username %}">{{ notification.sender }}</a> 
+                started following you
+            {% endif %}
+            <small class="text-muted float-end">{{ notification.created_at|timesince }} ago</small>
+        </div>
+    </div>
+    {% empty %}
+        <p>No notifications yet</p>
+    {% endfor %}
+</div>
+{% endblock %}

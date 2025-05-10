@@ -1,0 +1,22 @@
+{% extends "blog/base.html" %}
+{% block title %}{% if form.instance.pk %}Update{% else %}New{% endif %} Post{% endblock %}
+
+{% block content %}
+    <div class="content-section">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">{% if form.instance.pk %}Update{% else %}New{% endif %} Post</legend>
+                {{ form.as_p }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Post</button>
+                {% if form.instance.pk %}
+                    <a class="btn btn-outline-secondary" href="{% url 'post-detail' form.instance.pk %}">Cancel</a>
+                {% else %}
+                    <a class="btn btn-outline-secondary" href="{% url 'blog-home' %}">Cancel</a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+{% endblock %}

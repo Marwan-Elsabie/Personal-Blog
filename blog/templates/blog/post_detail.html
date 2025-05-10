@@ -1,0 +1,64 @@
+{% extends "blog/base.html" %}
+
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block content %}
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="me-2" href="{% url 'profile' username=post.author.username %}">{{ post.author }}</a>
+            <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+        </div>
+        {% if post.author == user %}
+            <div>
+                <a href="{% url 'post-update' post.id %}" class="btn btn-secondary">Update</a>
+                <a href="{% url 'post-delete' post.id %}" class="btn btn-danger">Delete</a>
+            </div>
+        {% endif %}
+        <h2 class="article-title">{{ post.title }}</h2>
+        <p class="article-content">{{ post.content }}</p>
+        {% if post.image %}
+            <img src="{{ post.image.url }}" class="img-fluid mb-3" alt="Post image">
+        {% endif %}
+    </div>
+</article>
+
+
+     <!-- Comments Section -->
+    <div class="comments-section mt-4">
+        <h3>Comments</h3>
+        {% for comment in object.comments.all %}
+            {% if comment.approved_comment %}
+                <div class="comment mb-3 p-3 bg-light">
+                    <div class="comment-metadata mb-2">
+                        <strong>{{ comment.author }}</strong>
+                        <small class="text-muted">{{ comment.created_date|timesince }} ago</small>
+                        {% if user == comment.author or user == object.author %}
+                            <form method="post" action="{% url 'delete-comment' comment.id|stringformat:'s' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="text-danger">Delete</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    <p>{{ comment.text }}</p>
+                </div>
+            {% endif %}
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+
+        {% if user.is_authenticated %}
+            <div class="comment-form mt-4">
+                <h4>Add a comment</h4>
+                <form method="post" action="{% url 'add-comment' object.id %}">
+                    {% csrf_token %}
+                    {{ comment_form.as_p }}
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        {% else %}
+            <p><a href="{% url 'login' %}">Login</a> to leave a comment.</p>
+        {% endif %}
+    </div>
+{% endblock %}
