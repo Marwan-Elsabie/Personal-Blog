@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,16 +22,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-750e4#ad)+a$6j51y@)qgq)qt(fpot(u(y@ig#0!i=^412-j2t'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-key-for-dev-only')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+DEBUG = False
 
 ALLOWED_HOSTS = [ 
     'localhost',
     '127.0.0.1',
     'morning-atoll-01965-57b515a919c1.herokuapp.com',
     ]
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 
 # Application definition
@@ -83,12 +87,12 @@ WSGI_APPLICATION = 'blog_project.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
 }
 
+OPTIONS = {
+    'options': '-c search_path=django,public'
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -124,17 +128,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'blog/static'),
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 
 
