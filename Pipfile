@@ -9,11 +9,11 @@ pillow = "*"
 crispy-bootstrap5 = "*"
 django-crispy-forms = "*"
 gunicorn = "*"
-psycopg2-binary = "*"
-whitenoise = "*"
 python-dotenv = "*"
-dj-database-url = "*"
 django-heroku = "*"
+whitenoise = "*"
+psycopg2-binary = "*"
+dj-database-url = "*"
 
 [dev-packages]
 
