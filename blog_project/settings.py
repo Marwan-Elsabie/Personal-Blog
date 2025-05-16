@@ -38,7 +38,7 @@ SECRET_KEY = config("SECRET_KEY")
 
 DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1' , 'personal-blog.onrender.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1' , 'personal-blog-lazx.onrender.com']
 
 SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = False
