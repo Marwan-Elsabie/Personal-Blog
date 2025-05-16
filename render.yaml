@@ -2,7 +2,7 @@ services:
   - type: web
     name: personal-blog
     env: python
-    buildCommand: "pip install pipenv && pipenv install --deploy --ignore-pipfile && pipenv requirements > requirements.txt"
+    buildCommand: "pip install pipenv && pipenv install --deploy --ignore-pipfile"
     startCommand: >
       python manage.py migrate &&
       python manage.py collectstatic --noinput &&
