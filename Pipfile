@@ -8,12 +8,13 @@ django = "*"
 pillow = "*"
 crispy-bootstrap5 = "*"
 django-crispy-forms = "*"
-gunicorn = "*"
 python-dotenv = "*"
 django-heroku = "*"
-whitenoise = "*"
 psycopg2-binary = "*"
+gunicorn = "*"
 dj-database-url = "*"
+python-decouple = "*"
+whitenoise = "*"
 
 [dev-packages]
 

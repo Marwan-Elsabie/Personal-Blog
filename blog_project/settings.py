@@ -13,27 +13,33 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+from decouple import config
 from dotenv import load_dotenv
-load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(os.path.join(BASE_DIR, '.env'), override=True)
+
+
+db_url = os.environ.get('DATABASE_URL')
+print(f"DEBUG: DATABASE_URL from env: {db_url}")
+
+
+
+
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-key-for-dev-only')
+SECRET_KEY = config("SECRET_KEY")
 
 
-DEBUG = False
+DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = [ 
-    'localhost',
-    '127.0.0.1',
-    'morning-atoll-01965-57b515a919c1.herokuapp.com',
-    ]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1' , 'personal-blog.onrender.com']
+
 SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
@@ -88,25 +94,27 @@ WSGI_APPLICATION = 'blog_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+# Database config
 
-import dj_database_url  
+
+
+if not db_url:
+    raise Exception("DATABASE_URL environment variable not set or empty")
+
+try:
+    db_config = dj_database_url.parse(db_url, conn_max_age=600)
+except Exception as e:
+    raise Exception(f"Error parsing DATABASE_URL: {e}")
+
+db_config['OPTIONS'] = {'options': '-c search_path=django,public'}
+
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': dj_database_url.config(conn_max_age=600)
 }
-# Security settings
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-OPTIONS = {
-    'options': '-c search_path=django,public'
-}
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -160,7 +168,7 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = 'blog-home'
 
-DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"

@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: personal-blog
+    env: python
+    buildCommand: "pip install pipenv && pipenv install --deploy --ignore-pipfile && pipenv requirements > requirements.txt"
+    startCommand: "gunicorn blog_project.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        value: 5vbjzp)__s(j!b*t%rg)-fi$c*ikcxetq6ptjwk3*=&*j)e*vo
+      - key: DEBUG
+        value: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: personal-blog-db
+          property: connectionString
+
+databases:
+  - name: personal-blog-db
+    plan: free
