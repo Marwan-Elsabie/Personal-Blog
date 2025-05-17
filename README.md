@@ -77,10 +77,6 @@ personal-blog/
 6.Run development server:
   python manage.py runserver
 
-🌐 Live Demo
-Access the deployed version at:
-🔗 yourusername.pythonanywhere.com
-
 📜 License
 MIT License - See LICENSE for details.
 
